@@ -1,1 +1,167 @@
+#1
+217. Contains Duplicate
+Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
+Example 1:
+Input: nums = [1,2,3,1]
+Output: true
+#code
+func containsDuplicate(nums []int) bool {
+    s := make ( map[int]bool)
 
+    for i := 0; i< len(nums);i++{
+        //placing all the values into the map
+        s[nums[i]] = true
+    }
+    
+    if len(s) == len(nums){
+        return false
+    }
+    return true
+}
+
+//code 2
+242. Valid Anagram
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+func isAnagram(s string, t string) bool {
+    if len(s) != len(t) {
+        return false
+    }
+    count := make(map[rune]int)
+    for _,c := range s {
+        count[c]++
+    }
+    
+    for _,c := range t {
+        count[c]--
+        if count[c] < 0{
+            return false
+        }
+    }
+retur true 
+}
+
+#code 3
+1. Two Sum
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+You can return the answer in any order.
+Example 1:
+
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+func twoSum(nums []int, target int) []int {
+    getval := make(map[int]int)
+    for i, n := range nums {
+        diff := target-n
+//index, ok := getval[diff]: This line attempts to retrieve the index of the complement of the current element from the getval map. 
+//The ok boolean variable is used to check if the complement exists in the map. If it does, index will hold its value.
+//if ok { return []int{getval[diff], i} }: This condition checks if the complement exists in the map. If it does, it means that the current element n and its complement (which is target - n) add up to the target sum. So, it returns a slice containing the indices of these two elements.
+        index,ok :=  getval[diff] 
+        if ok{
+            return []int{getval[diff], i} 
+        } 
+        getval[n] = i
+    }
+    return nil
+}
+
+#code 4
+238. Product of Array Except Self
+Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+You must write an algorithm that runs in O(n) time and without using the division operation.
+Example 1:
+Input: nums = [1,2,3,4]
+Output: [24,12,8,6]
+
+func productExceptSelf(nums []int) []int {
+    leng := len(nums)
+    res := make( []int, leng)
+    prefix := 1
+    for i,_ := range nums{
+        res[i] = prefix
+        prefix *= nums[i]
+    }
+    postfix := 1
+    for i:= leng-1; i>=0;i-- {
+        res[i] *=postfix
+        postfix *= nums[i]
+    }
+    return res
+}
+// code 4
+128. Longest Consecutive Sequence
+Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+You must write an algorithm that runs in O(n) time.
+Example 1:
+
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+
+func longestConsecutive(nums []int) int {
+
+
+//     //We use an empty struct because it occupies zero bytes of 
+//     //memory and serves as a placeholder for the map values.
+//     //set-like ds 
+//     m := make(map[int]int)
+
+//     for i,v := range nums{
+//         //assigns an empty struct to the map m with the key v, 
+//         m[v] = i
+//     }
+//     maxc :=0
+//     for _,v :=range nums{
+//         //check if previous exist
+//         _,ok := m[v-1]
+//         if ok {
+//             continue
+//         }
+//         count := 1
+//         nxtv := v
+//         for {
+//             nxtv ++
+//             _,ok := m[nxtv]
+//             if ok{
+//                 count ++
+//             } else {
+//                 maxc =  Max ( maxc, count)
+//                 break
+
+//             }
+//         }
+
+//     } 
+//     return maxc  
+// }
+
+// func Max(a,b int) int{
+//     if a>b{
+//         return a
+//     }
+//     return b
+
+//another approch using sort function
+    if len(nums) <= 0{
+        return 0
+    }
+    slices.Sort(nums)
+    var long, ct int = 1,1
+
+    for i := 1;i<len(nums);i++ {
+        if nums[i] == nums[i-1]+1{
+            ct++
+            if ct > long{
+                long = ct
+            }
+        } else if nums[i] != nums[i-1]{
+            ct = 1
+        }
+        
+    }
+    return long
+}
